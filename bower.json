@@ -1,0 +1,25 @@
+{
+  "name": "ls-cep",
+  "homepage": "https://github.com/leandrosimoes/ls_cep",
+  "authors": [
+    "Leandro Simões <leandro.simoes@outlook.com>"
+  ],
+  "description": "A little CEP (Brazil Postal Code) address search lib using Postmon and ViaCep WebServices",
+  "main": "ls-cep.js",
+  "keywords": [
+    "CEP",
+    "Brazil",
+    "Postal",
+    "Code",
+    "Address",
+    "Search"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
