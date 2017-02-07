@@ -1,4 +1,4 @@
-# ls_cep
+# ls-cep
 A little CEP (Brasil Postal Code) address search lib using Postmon and ViaCep WebServices
 
 ### Install
