@@ -1,15 +1,15 @@
-;(function() {
-	JSON = JSON || {};
+; (function () {
+    JSON = JSON || {};
 
-	JSON.tryParse = function(jsonString) {
-		try {
-		   return JSON.parse(jsonString);
-		} catch(e) {
-		   return undefined;
-		}
-	};
-	
-	var defaultDiacriticsRemovalMap = [
+    JSON.tryParse = function (jsonString) {
+        try {
+            return JSON.parse(jsonString);
+        } catch (e) {
+            return undefined;
+        }
+    };
+
+    var defaultDiacriticsRemovalMap = [
 		{ 'base': 'A', 'letters': /[\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u00C4\u01DE\u1EA2\u00C5\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F]/g },
 		{ 'base': 'AA', 'letters': /[\uA732]/g },
 		{ 'base': 'AE', 'letters': /[\u00C6\u01FC\u01E2]/g },
@@ -94,136 +94,146 @@
 		{ 'base': 'x', 'letters': /[\u0078\u24E7\uFF58\u1E8B\u1E8D]/g },
 		{ 'base': 'y', 'letters': /[\u0079\u24E8\uFF59\u1EF3\u00FD\u0177\u1EF9\u0233\u1E8F\u00FF\u1EF7\u1E99\u1EF5\u01B4\u024F\u1EFF]/g },
 		{ 'base': 'z', 'letters': /[\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763]/g }
-	];
+    ];
 
-	var states = {				 
-		'ACRE':	'AC',	 
-		'ALAGOAS': 'AL',	 
-		'AMAPA': 'AP',	 
-		'AMAZONAS': 'AM',	 
-		'BAHIA': 'BA',	 
-		'CEARA': 'CE',	 
-		'DISTRITO_FEDERAL':	'DF',	 
-		'ESPIRITO_SANTO': 'ES',	 
-		'GOIAS': 'GO',	 
-		'MARANHAO': 'MA',	 
-		'MATO_GROSSO': 'MT',	 
-		'MATO_GROSSO_DO_SUL': 'MS',	 
-		'MINAS_GERAIS':	'MG',	 
-		'PARA': 'PA',	 
-		'PARAIBA': 'PB',	 
-		'PARANA': 'PR',	 
-		'PERNAMBUCO': 'PE',	 
-		'PIAUI': 'PI',	 
-		'RIO_DE_JANEIRO': 'RJ',	 
-		'RIO_GRANDE_DO_NORTE': 'RN',	 
-		'RIO_GRANDE_DO_SUL': 'RS',	 
-		'RONDONIA':	'RO',	 
-		'RORAIMA': 'RR',	 
-		'SANTA_CATARINA': 'SC',	 
-		'SAO_PAULO': 'SP',	 
-		'SERGIPE': 'SE',	 
-		'TOCANTINS': 'TO'
-	};
+    var states = {
+        'ACRE': 'AC',
+        'ALAGOAS': 'AL',
+        'AMAPA': 'AP',
+        'AMAZONAS': 'AM',
+        'BAHIA': 'BA',
+        'CEARA': 'CE',
+        'DISTRITO_FEDERAL': 'DF',
+        'ESPIRITO_SANTO': 'ES',
+        'GOIAS': 'GO',
+        'MARANHAO': 'MA',
+        'MATO_GROSSO': 'MT',
+        'MATO_GROSSO_DO_SUL': 'MS',
+        'MINAS_GERAIS': 'MG',
+        'PARA': 'PA',
+        'PARAIBA': 'PB',
+        'PARANA': 'PR',
+        'PERNAMBUCO': 'PE',
+        'PIAUI': 'PI',
+        'RIO_DE_JANEIRO': 'RJ',
+        'RIO_GRANDE_DO_NORTE': 'RN',
+        'RIO_GRANDE_DO_SUL': 'RS',
+        'RONDONIA': 'RO',
+        'RORAIMA': 'RR',
+        'SANTA_CATARINA': 'SC',
+        'SAO_PAULO': 'SP',
+        'SERGIPE': 'SE',
+        'TOCANTINS': 'TO'
+    };
 
-	var changes;
-	function removeDiacritics(str) {
-		if (!changes) {
-			changes = defaultDiacriticsRemovalMap;
-		}
-		for (var i = 0; i < changes.length; i++) {
-			str = str.replace(changes[i].letters, changes[i].base);
-		}
-		return str;
-	}
-	
-	function getStateInitials(state) {
-		state = state || '';
+    var changes;
+    function removeDiacritics(str) {
+        if (!changes) {
+            changes = defaultDiacriticsRemovalMap;
+        }
+        for (var i = 0; i < changes.length; i++) {
+            str = str.replace(changes[i].letters, changes[i].base);
+        }
+        return str;
+    }
 
-		state = removeDiacritics(state).toUpperCase().replace(' ', '_');
+    function getStateInitials(state) {
+        state = state || '';
 
-		return states[state];
-	}
-	
-	function Address(cep, city, neighborhood, street, state, ibge) {
-		return {
-			cep: cep || '',
-			city: city || '',
-			neighborhood: neighborhood || '',
-			street: street || '',
-			state: state || '',
-			stateInitials: getStateInitials(state) || '',
-			ibge: ibge || ''
-		};
-	}
-	
-	function doRequest(url, source, callback) {
-		var oReq = new XMLHttpRequest();
-		oReq.addEventListener("load", function () {
-			var ret = JSON.tryParse(this.responseText),
-				address = undefined;
-			
-			if(!ret || !!ret.error) {
-				return address;
-			}
+        state = removeDiacritics(state).toUpperCase().replace(' ', '_');
 
-			if(source === ls_cep.sources.postmon) {
-				address = Address(ret.cep, 
-							   	  ret.cidade, 
-							   	  ret.bairro, 
-								  ret.logradouro, 
-							   	  ret.estado_info.nome, 
-							   	  ret.estado_info.codigo_ibge);
-			}
-			
-			if(source === ls_cep.sources.viacep) {
-				address = Address(ret.cep, 
-								  ret.localidade, 
-							   	  ret.bairro, 
-								  ret.logradouro, 
-							   	  ret.uf, 
-							   	  ret.ibge);
-			}
+        return states[state];
+    }
 
-			console.log(address);
+    function Address(cep, city, neighborhood, street, state, ibge) {
+        return {
+            cep: cep || '',
+            city: city || '',
+            neighborhood: neighborhood || '',
+            street: street || '',
+            state: state || '',
+            stateInitials: getStateInitials(state) || '',
+            ibge: ibge || ''
+        };
+    }
 
-			if(!!callback && typeof callback == 'function') callback(address);
-		});
-		oReq.open("GET", url);
-		oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		oReq.send();
-	}
+    function onLoadEnd(xhr, callback, source) {
+        var ret = JSON.tryParse(xhr.responseText),
+            address = undefined;
 
-	var ls_cep = {
-		sources: {
-			postmon: 'postmon',
-			viacep: 'viacep'
-		},
-		isValid: function(cep) {
-			return !!cep && cep.match(/^[0-9]{5}-?[0-9]{3}$/);
-		},
-		getAddress(cep, source, callback) {
-			if(!ls_cep.isValid(cep)) {
-				throw 'The CEP format is not valid (Valid CEP formats: 99999999 or 99999-999)'
-			}
-			
-			cep = cep.replace('-', '')	
-			
-			source = source || ls_cep.sources.postmon;
-			
-			if(source !== ls_cep.sources.postmon && source !== ls_cep.sources.viacep) {
-				throw 'The source is not valid (Valid sources: "' + ls_cep.sources.postmon + '" and "' + ls_cep.sources.viacep + '")';
-			}
-						
-			if(source === ls_cep.sources.postmon) {
-				doRequest('https://api.postmon.com.br/v1/cep/' + cep, ls_cep.sources.postmon, callback);
-			}
-			
-			if(source === ls_cep.sources.viacep) {
-				doRequest('https://viacep.com.br/ws/' + cep + '/json/', ls_cep.sources.viacep, callback);
-			}
-		}
-	}
+        if (xhr.status == 404 || !!ret.erro) {
+            console.log('No address found.')
+            return;
+        }
 
-	window.ls_cep = ls_cep;
+        if (xhr.status == 500) {
+            console.log('Internal server error.')
+            return;
+        }
+
+        if (source === ls_cep.sources.postmon) {
+            address = Address(ret.cep,
+                              ret.cidade,
+                              ret.bairro,
+                              ret.logradouro,
+                              ret.estado_info.nome,
+                              ret.estado_info.codigo_ibge);
+        }
+
+        if (source === ls_cep.sources.viacep) {
+            address = Address(ret.cep,
+                              ret.localidade,
+                              ret.bairro,
+                              ret.logradouro,
+                              ret.uf,
+                              ret.ibge);
+        }
+
+        console.log(address);
+
+        if (!!callback && typeof callback == 'function') callback(address);
+    };
+
+    function doRequest(url, source, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.onloadend = function () {
+            onLoadEnd(xhr, callback, source);
+        };
+        xhr.open("GET", url);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send();
+    }
+
+    var ls_cep = {
+        sources: {
+            postmon: 'postmon',
+            viacep: 'viacep'
+        },
+        isValid: function (cep) {
+            return !!cep && cep.match(/^[0-9]{5}-?[0-9]{3}$/);
+        },
+        getAddress(cep, source, callback) {
+            if (!ls_cep.isValid(cep)) {
+                throw 'The CEP format is not valid (Valid CEP formats: 99999999 or 99999-999)'
+            }
+
+            cep = cep.replace('-', '')
+
+            source = source || ls_cep.sources.postmon;
+
+            if (source !== ls_cep.sources.postmon && source !== ls_cep.sources.viacep) {
+                throw 'The source is not valid (Valid sources: "' + ls_cep.sources.postmon + '" and "' + ls_cep.sources.viacep + '")';
+            }
+
+            if (source === ls_cep.sources.postmon) {
+                doRequest('https://api.postmon.com.br/v1/cep/' + cep, ls_cep.sources.postmon, callback);
+            }
+
+            if (source === ls_cep.sources.viacep) {
+                doRequest('https://viacep.com.br/ws/' + cep + '/json/', ls_cep.sources.viacep, callback);
+            }
+        }
+    }
+
+    window.ls_cep = ls_cep;
 })();
