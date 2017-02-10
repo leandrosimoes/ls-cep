@@ -16,6 +16,12 @@ A little CEP (Brasil Postal Code) address search lib using Postmon and ViaCep We
 ls_cep.getAddress(cep, source, callback)
 ```
 
+```javascript
+// 'cep' is the postal code to be validated
+// return 'true' or 'false'
+ls_cep.isValid(cep)
+```
+
 ### Usage Sample
 
 ```javascript
