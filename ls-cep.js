@@ -1,4 +1,6 @@
-; (function () {
+; (function (window, document, commonjs) {
+	"use strict";
+	
     JSON = JSON || {};
 
     JSON.tryParse = function (jsonString) {
@@ -234,6 +236,10 @@
             }
         }
     }
-
-    window.ls_cep = ls_cep;
-})();
+	
+	if (commonjs) {
+        module.exports = ls_cep;
+    } else {
+        window.ls_cep = ls_cep;
+    }
+})(window, document, typeof (exports) !== "undefined");
