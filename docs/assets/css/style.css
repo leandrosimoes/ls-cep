@@ -1,0 +1,65 @@
+html,
+body {
+	height: 100%;
+    margin: 0;
+    padding: 0;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.search-area {
+	position: relative;
+	width: 50%;
+	margin: 0 auto;
+	overflow: hidden;
+	padding: 20px 0;
+}
+
+#address-details {
+    position: relative;
+    width: 50%;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 20px 10px;
+    background: #ccc;
+    margin-bottom: 10px;
+    box-shadow: 0 0 10px #aaa inset;
+	color: #292929;
+}
+
+.search-area input {
+	width: 100%;
+	border: none;
+	border-bottom: 1px solid #ccc;
+	outline: none;
+	padding: 5px;
+	margin-bottom: 2px;
+	text-align: center;
+}
+
+.search-area button {
+	width: 100%;
+	background-color: #0095ff;
+	border: none;
+	padding: 5px;
+	color: #fff;
+	cursor: pointer;
+}
+
+.search-area button:hover {
+	background-color: #0055ff;
+}
+
+.google-maps {
+	position: relative;
+	overflow: hidden;
+	width: 50%;
+	height: 100%;
+	margin: 0 auto;
+}
+.google-maps iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100% !important;
+	height: 100% !important;
+}

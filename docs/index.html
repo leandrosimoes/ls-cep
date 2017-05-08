@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Ls-CEP - CEP Search Lib</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+        <link href="./assets/css/style.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="search-area">
+            <input id="search-input" type="text" name="cep" value="" placeholder="99999-999 or 99999999">
+            <button id="search-button" type="button">Search</button>
+        </div>
+        <div id="address-details"></div>
+        <div id="testmap" class="google-maps"></div>
+        <script src="./assets/js/ls-cep.js"></script>
+        <script src="./assets/js/app.js"></script>
+    </body>
+</html>
