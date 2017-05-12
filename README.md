@@ -48,10 +48,14 @@ ls_cep.setMapCep(mapIframeId, cep)
 
 ```javascript
 //15057-220 is a valid CEP from Brazil
-ls_cep.getAddress('15057-220', ls_cep.sources.postmon, function(address) { 
-    /* callback function */ 
-    /* You can use here the setMapCep for example */
-    ls_cep.setMapCep('#myIframeMapId', address.cep);
+ls_cep.getAddress({ 
+    cep: '15057-220', 
+    source: ls_cep.sources.postmon, 
+    callback: function(address) { 
+        /* callback function */ 
+        /* You can use here the setMapCep for example */
+        ls_cep.setMapCep('#myIframeMapId', address.cep);
+    }
 })
 ```
 
